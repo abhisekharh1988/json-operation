@@ -59,4 +59,37 @@ class JsonComparatorTest {
 
         assertFalse(new JsonComparator().isEqual(json1, json2));
     }
+
+    @Test
+    public void shouldReturnTrueIfFieldIsArrayAndContainsSameObject() {
+        String str1 = "{\"employees\": [{\"name\": \"Abhisek\"}]}";
+        String str2 = "{\"employees\": [{\"name\": \"Adarsh\"}]}";
+
+        JSONObject json1 = new JSONObject(str1);
+        JSONObject json2 = new JSONObject(str2);
+
+        assertTrue(new JsonComparator().isEqual(json1, json2));
+    }
+
+    @Test
+    public void shouldReturnFalseIfOneArrayIsEmptyAndOtherNonEmpty() {
+        String str1 = "{\"employees\": [{\"name\": \"Abhisek\"}]}";
+        String str2 = "{\"employees\": []}";
+
+        JSONObject json1 = new JSONObject(str1);
+        JSONObject json2 = new JSONObject(str2);
+
+        assertFalse(new JsonComparator().isEqual(json1, json2));
+    }
+
+    @Test
+    public void shouldReturnFalseIfBothJsonHaveSameFieldButOneOfThemHavingNullValue() {
+        String str1 = "{\"name\": \"Abhisek\", \"age\": null}";
+        String str2 = "{\"name\": \"Abhisek\", \"age\": \"34\"}";
+
+        JSONObject json1 = new JSONObject(str1);
+        JSONObject json2 = new JSONObject(str2);
+
+        assertFalse(new JsonComparator().isEqual(json1, json2));
+    }
 }

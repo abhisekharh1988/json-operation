@@ -6,6 +6,13 @@ import java.util.*;
 
 public class JsonComparator {
     public boolean isEqual(Object json1, Object json2) throws JSONException {
+        boolean isOneObjectNullAndAnotherNonNull = (Objects.isNull(json1) && !Objects.isNull(json2)) ||
+                (!Objects.isNull(json1) && Objects.isNull(json2)) ;
+
+        if (isOneObjectNullAndAnotherNonNull) {
+            return false;
+        }
+
         if (!json1.getClass().equals(json2.getClass())) {
             return false;
         }
@@ -32,6 +39,13 @@ public class JsonComparator {
         } else if (json1 instanceof JSONArray) {
             JSONArray arrFromFirstJson = (JSONArray) json1;
             JSONArray arrFromSecondJson = (JSONArray) json2;
+
+            boolean isOneArrayEmptyAndOtherNonEmpty = (arrFromFirstJson.isEmpty() && !arrFromSecondJson.isEmpty()) ||
+                    (!arrFromFirstJson.isEmpty() && arrFromSecondJson.isEmpty());
+
+            if (isOneArrayEmptyAndOtherNonEmpty) {
+                return false;
+            }
 
             boolean equal = isEqual(arrFromFirstJson.get(0), arrFromSecondJson.get(0));
             if (!equal) {
